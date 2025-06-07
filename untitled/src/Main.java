@@ -4,6 +4,13 @@ import java.util.ArrayList;
 
 public class Main {
     static double epsilon=0.0001d;
+    static double[] baseCostConstraints ={1d,100d};
+    static int[] cashierCountConstraints ={1,10};
+    static int[] maxTypePerCashierConstraints ={1,50};
+
+
+
+
     public static void main(String[] args) throws IOException {
 
 
@@ -51,8 +58,14 @@ public class Main {
             for(int i=0;i<items.size();i++){
                 itemsArray[i]=items.get(i);
             }
+            if(cashier_count<cashierCountConstraints[0]||cashier_count>cashierCountConstraints[1]||max_type_per_cashier<maxTypePerCashierConstraints[0]||max_type_per_cashier>maxTypePerCashierConstraints[1]||base_cost<baseCostConstraints[0]||base_cost>baseCostConstraints[1])
+            {
+                System.out.println("input is no in constraints");
+            }
+            else
+            {
             solutionParameters.add(new parameters(base_cost, cashier_count, max_type_per_cashier, itemsArray));
-
+            }
         }
         br.close();
 
@@ -225,7 +238,9 @@ public class Main {
                     is_fatigue=false;
                 }
                 Last_items.add(item_type);
-
+                if(Last_items.size() > 3) {
+                    Last_items.remove(0);
+                }
 
 
             }
