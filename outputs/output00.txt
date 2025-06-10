@@ -1,3 +1,10 @@
-0.totalcost: 15.8
+0.totalcost: 12.600000000000001
 1.totalcost: -1.0
-2.totalcost: 98.69999999999999
+2.totalcost: 6.4
+3.totalcost: 3.0
+4.totalcost: 2.4000000000000004
+5.totalcost: 0.0
+6.totalcost: 12.0
+7.totalcost: 12.9
+8.totalcost: 6.4
+9.totalcost: 6.4

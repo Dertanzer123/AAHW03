@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 
-public class Main {
+public class  Main{
     static double epsilon=0.0001d;
     static double[] baseCostConstraints ={1d,100d};
     static int[] cashierCountConstraints ={1,10};
@@ -11,7 +11,7 @@ public class Main {
 
 
 
-    public static void main(String[] args) throws IOException {
+    public Main() throws IOException {
 
 
         ArrayList<parameters> solutionParameters=new ArrayList<parameters>();
@@ -58,6 +58,7 @@ public class Main {
             for(int i=0;i<items.size();i++){
                 itemsArray[i]=items.get(i);
             }
+            items.clear();// bugfix
             if(cashier_count<cashierCountConstraints[0]||cashier_count>cashierCountConstraints[1]||max_type_per_cashier<maxTypePerCashierConstraints[0]||max_type_per_cashier>maxTypePerCashierConstraints[1]||base_cost<baseCostConstraints[0]||base_cost>baseCostConstraints[1])
             {
                 System.out.println("input is no in constraints");
@@ -92,7 +93,7 @@ public class Main {
 
 
     }
-    static double calculate_cost(int[] items, int cashier_count, int max_type_per_cashier, double base_cost)
+     double calculate_cost(int[] items, int cashier_count, int max_type_per_cashier, double base_cost)
     {
 
 
@@ -104,59 +105,33 @@ public class Main {
         double totalcost=0;
         int commited_transactions=0;
         for(int item:items){
-
             double min_item_cost=Double.MAX_VALUE/2;
             double holder;
             int cashier_pointer=-1;
             for(int i=0;i<cashier_count;i++){
-
                holder= cashiers[i].test_item(item,base_cost);
                if(holder<min_item_cost&&holder>-.5d){
                    min_item_cost=holder;
                    cashier_pointer=i;
                }
-
-
-
-
             }
                 if(cashier_pointer==-1){
                     return -1;
                 }else{
-
                     cashiers[cashier_pointer].add_item(item,base_cost);
                     totalcost+=min_item_cost;
                     commited_transactions++;
                     if(commited_transactions==5)
-                    {
-                        base_cost+=1d;
+                    {   base_cost+=1d;
                         commited_transactions=0;
                     }
                 }
-
-
-
-
         }
         return totalcost;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 
-    static class cashier{
+    class cashier{
         boolean is_fatigue;
         int item_type_count;
         int[] item_types;
@@ -174,7 +149,7 @@ public class Main {
         double test_item(int item_type,double base_cost)
         {
             boolean is_contains=false;
-            for(int i=0;i<item_type_pointer;i++)
+            for(int i=0;i<item_type_pointer;i++)// if its contains
             {
                 if(item_types[i]==item_type)
                 {
@@ -182,29 +157,29 @@ public class Main {
                     break;
                 }
             }
-            if(!is_contains&&item_type_pointer==item_type_count)
+            if(!is_contains&&item_type_pointer==item_type_count) //if its not contains and its full
             {
                 return -1;
             }
 
-            if(Last_items.isEmpty())
+            if(Last_items.isEmpty())//if its empty
             {
                 return 0;
             }
-            if(is_fatigue&&Last_items.get(Last_items.size()-1)==item_type)
+            if(is_fatigue&&Last_items.get(Last_items.size()-1)==item_type)//if its fatigue and last item is same
             {
                 return base_cost*1.5d;
             }
-            if(Last_items.get(Last_items.size()-1)>item_type)
+            if(Last_items.get(Last_items.size()-1)>item_type)//if last item is bigger than current
             {
                 return base_cost*0.8d;
             }
-//            if(!is_fatigue&&Last_items.get(Last_items.size()-1)==item_type) //this part if transaction between same type is zero cost
-//            {
-//                return 0;
-//            }
+            if(!is_fatigue&&Last_items.get(Last_items.size()-1)==item_type) //this part if transaction between same type is zero cost
+            {
+                return 0;
+            }
 
-            return base_cost;
+            return base_cost;//if its not fatigue and last item is same
 
         }
         void add_item(int item_type,double base_cost)
@@ -250,7 +225,7 @@ public class Main {
     }
 
 
-    static class parameters{
+    class parameters{
         double base_cost;
         int cashier_count;
         int max_type_per_cashier;
